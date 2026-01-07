@@ -1,11 +1,22 @@
 import streamlit as st
 from streamlit_app import run_query, FILTER_CLAUSE
 
+# --------------------------------------------------
+# Product Margin Analysis Page
+# Analyzes revenue, cost, profit, and margin by product category
+# --------------------------------------------------
+
+# Page title and business context
 st.header("Product Margin Analysis")
 st.caption(
     "Evaluates revenue, cost, and margin performance by product category to identify profit drivers and margin leakage."
 )
 
+# --------------------------------------------------
+# SQL Query
+# Aggregates revenue and cost at the category level
+# Applies global date filter from the sidebar (FILTER_CLAUSE)
+# --------------------------------------------------
 query = f"""
 SELECT
     p.category,
@@ -22,33 +33,40 @@ GROUP BY p.category
 ORDER BY profit DESC;
 """
 
+# Execute query and load results into DataFrame
 df = run_query(query)
 
-# Defensive calculations
+# --------------------------------------------------
+# Margin Calculations
+# Defensive logic prevents division errors or missing data
+# --------------------------------------------------
 df["margin_pct"] = (df["profit"] / df["revenue"]) * 100
 df = df.fillna(0)
 
-# ------------------------------
-# Revenue vs Profit
-# ------------------------------
+# --------------------------------------------------
+# Revenue vs Profit Visualization
+# Highlights categories that generate volume vs actual profit
+# --------------------------------------------------
 st.subheader("Revenue vs Profit by Category")
 st.bar_chart(
     df.set_index("category")[["revenue", "profit"]],
     use_container_width=True
 )
 
-# ------------------------------
-# Margin Insight
-# ------------------------------
+# --------------------------------------------------
+# Margin Percentage Visualization
+# Shows which categories are most efficient financially
+# --------------------------------------------------
 st.subheader("Contribution Margin by Category (%)")
 st.bar_chart(
     df.set_index("category")[["margin_pct"]],
     use_container_width=True
 )
 
-# ------------------------------
-# Insight Table
-# ------------------------------
+# --------------------------------------------------
+# Detailed Category Performance Table
+# Provides full transparency into category-level metrics
+# --------------------------------------------------
 st.subheader("Category Performance Summary")
 st.dataframe(
     df,
