@@ -61,10 +61,25 @@ FROM raw.orders;
 """
 dates = run_query(date_query)
 
+min_date = dates["min_date"].iloc[0]
+max_date = dates["max_date"].iloc[0]
+
+# Stop app cleanly if no data
+if min_date is None or max_date is None:
+    st.error("No order data available.")
+    st.stop()
+
+# Convert to Python date objects (required by Streamlit Cloud)
+min_date = min_date.date() if hasattr(min_date, "date") else dt.date.fromisoformat(str(min_date))
+max_date = max_date.date() if hasattr(max_date, "date") else dt.date.fromisoformat(str(max_date))
+
 start_date, end_date = st.sidebar.date_input(
     "Order Date Range",
-    value=(dates["min_date"][0], dates["max_date"][0])
+    value=(min_date, max_date),
+    min_value=min_date,
+    max_value=max_date
 )
+
 
 # This clause assumes queries join raw.orders as alias o
 FILTER_CLAUSE = f"""
