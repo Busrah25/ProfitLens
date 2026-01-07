@@ -22,13 +22,14 @@ st.set_page_config(
 @st.cache_resource
 def get_connection():
     return psycopg2.connect(
-        dbname=os.getenv("POSTGRES_DB"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        host=os.getenv("POSTGRES_HOST"),
-        port=os.getenv("POSTGRES_PORT"),
+        host=st.secrets["db"]["host"],
+        port=st.secrets["db"]["port"],
+        dbname=st.secrets["db"]["name"],
+        user=st.secrets["db"]["user"],
+        password=st.secrets["db"]["password"],
         sslmode="require"
     )
+
 
 
 
