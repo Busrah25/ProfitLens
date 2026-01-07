@@ -20,15 +20,16 @@ st.set_page_config(
 # Uses a cached PostgreSQL connection for performance
 # --------------------------------------------------
 @st.cache_resource
-d@st.cache_resource
 def get_connection():
     return psycopg2.connect(
         dbname=os.getenv("POSTGRES_DB"),
         user=os.getenv("POSTGRES_USER"),
         password=os.getenv("POSTGRES_PASSWORD"),
         host=os.getenv("POSTGRES_HOST"),
-        port=os.getenv("POSTGRES_PORT")
+        port=os.getenv("POSTGRES_PORT"),
+        sslmode="require"
     )
+
 
 
 def run_query(query):
