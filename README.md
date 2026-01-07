@@ -1,46 +1,47 @@
 # ProfitLens
 
-An end to end analytics and profitability intelligence system that simulates how organizations model, transform, and analyze transactional business data.
-
-The project demonstrates a complete analytics workflow including data generation, ingestion, transformation, and an executive facing dashboard built with Streamlit.
+An end to end analytics and profitability intelligence system built with Python, SQL, PostgreSQL, and Streamlit that simulates how organizations model, transform, and analyze transactional business data for profitability reporting.
 
 ## Overview
-ProfitLens is designed to reflect real world analytics engineering and business intelligence practices. The repository is structured to mirror how production analytics systems separate raw data, analytics logic, and presentation layers.
+This project simulates real world analytics engineering and business intelligence workflows using synthetic transactional data. ProfitLens is designed to resemble an internal decision support system used by analytics and finance teams to understand profitability across customers, products, and regions.
 
-The project emphasizes clarity, maintainability, and business relevance rather than simple visualization.
+The application provides executive level KPIs and detailed profitability views backed by centralized and reproducible business logic.
+
+## Live Demo
+https://profitlens-bushra.streamlit.app/
 
 ## Business Problem
-Organizations need reliable and transparent profitability reporting across customers, products, and regions. This requires:
-- Consistent business logic  
-- Clean data models  
-- Reproducible transformations  
-- Executive friendly reporting  
+Organizations require reliable and transparent profitability reporting to support pricing, cost control, and strategic decision making. This requires:
 
-ProfitLens addresses how transactional data can be transformed into trustworthy profitability insights for decision making.
+- Consistent business logic across reports  
+- Clean and well structured data models  
+- Reproducible transformations  
+- Clear executive facing insights  
+
+ProfitLens addresses how raw transactional data can be transformed into trustworthy profitability insights used for business decisions.
 
 ## Solution Approach
-The system follows a layered analytics architecture:
+The system follows a standard industry analytics workflow:
 
 1. Generate realistic synthetic transactional data  
-2. Load source aligned data into a raw schema  
+2. Load source aligned data into a raw database schema  
 3. Apply centralized SQL based business logic in analytics tables and views  
 4. Validate data quality through automated checks  
 5. Present insights through a multi page executive dashboard  
 
-All transformations and calculations are reproducible and documented.
+All transformations and calculations are documented and reproducible.
 
-## Key Features
-- Layered raw and analytics data models  
-- Centralized SQL based profitability logic  
-- Order and customer level margin analysis  
-- Data quality validation checks  
-- Global date filtering across dashboard pages  
-- Executive focused KPI reporting  
+## Key Metrics
+- Revenue and cost by order  
+- Gross profit and margin  
+- Customer level profitability  
+- Product level profitability  
+- Regional performance summaries  
 
 ## Technologies Used
 - Python  
-- PostgreSQL  
 - SQL  
+- PostgreSQL  
 - Pandas  
 - Streamlit  
 - Docker  
@@ -48,46 +49,19 @@ All transformations and calculations are reproducible and documented.
 ## Data and Logic
 All datasets are generated programmatically using Python and stored as CSV files. Data is ingested into PostgreSQL under a raw schema and transformed into analytics tables and views using SQL.
 
-Profitability logic includes cost, revenue, discount, and shipping calculations. All business rules are documented and centralized to ensure consistency across reporting layers.
+Profitability logic includes revenue, cost, discount, and shipping calculations. All business rules are centralized to ensure consistency across dashboards and reports.
 
-## Repository Structure
 
-ProfitLens/
-├── app/
-│   ├── streamlit_app.py
-│   └── pages/
-├── pipeline/
-│   ├── generate_data.py
-│   ├── load_raw.py
-│   ├── build_analytics.py
-│   └── quality_checks.py
-├── sql/
-│   ├── 00_schemas.sql
-│   ├── 01_raw_tables.sql
-│   ├── 02_analytics_tables.sql
-│   ├── 03_views.sql
-│   └── 04_indexes.sql
-├── data/
-│   ├── customers.csv
-│   ├── orders.csv
-│   ├── order_items.csv
-│   ├── products.csv
-│   └── regions.csv
-├── docs/
-│   ├── assumptions.md
-│   ├── data_dictionary.md
-│   └── kpi_definitions.md
-├── docker-compose.yml
-├── requirements.txt
-└── README.md
+## Screenshot
+![ProfitLens Dashboard](profitlens_dashboard.png)
 
 ## How to Run Locally
+1. Start PostgreSQL using Docker  
+2. Create schemas, tables, views, and indexes  
+3. Run the data pipeline  
+4. Launch the Streamlit dashboard  
 
-1. Start PostgreSQL using Docker
-2. Create schemas, tables, views, and indexes
-3. Run the data pipeline
-4. Launch the Streamlit dashboard
-
+```bash
 docker compose up -d
 
 docker exec -i profitlens_postgres psql -U profitlens_user -d profitlens < sql/00_schemas.sql
@@ -102,21 +76,9 @@ python pipeline/quality_checks.py
 python pipeline/build_analytics.py
 
 streamlit run app/streamlit_app.py
-
-## Documentation
-
-docs/assumptions.md — Business assumptions for cost and pricing logic
-
-docs/data_dictionary.md — Field level definitions
-
-docs/kpi_definitions.md — KPI calculations and dashboard met
-
+```
 ## Future Improvements
-
-Support for incremental data loads
-
-Additional profitability breakdowns by channel
-
-Role based dashboard access
-
-Automated scheduling of pipeline execution
+-Support for incremental data loads
+-Additional profitability breakdowns by channel
+-Role based dashboard access
+-Automated scheduling of pipeline execution
