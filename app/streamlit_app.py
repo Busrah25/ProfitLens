@@ -70,8 +70,8 @@ if min_date is None or max_date is None:
     st.stop()
 
 # Convert to Python date objects (required by Streamlit Cloud)
-min_date = min_date.date() if hasattr(min_date, "date") else dt.date.fromisoformat(str(min_date))
-max_date = max_date.date() if hasattr(max_date, "date") else dt.date.fromisoformat(str(max_date))
+min_date = pd.to_datetime(dates["min_date"][0]).date()
+max_date = pd.to_datetime(dates["max_date"][0]).date()
 
 start_date, end_date = st.sidebar.date_input(
     "Order Date Range",
@@ -79,6 +79,7 @@ start_date, end_date = st.sidebar.date_input(
     min_value=min_date,
     max_value=max_date
 )
+
 
 
 # This clause assumes queries join raw.orders as alias o
